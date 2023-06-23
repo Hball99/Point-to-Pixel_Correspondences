@@ -76,9 +76,18 @@ if __name__ == '__main__':
 
     points_cleaned_np_hpr = hidden_point_removal(points_cleaned_np, camera=[0,0,1.73])
 
-    overlay_with_removal, _ = project_point_cloud_to_image(path_calib, points_cleaned_np_hpr, img)
+    overlay_with_removal, inds_with_removal = project_point_cloud_to_image(path_calib, points_cleaned_np_hpr, img)
 
-    overlay_without_removal, _ = project_point_cloud_to_image(path_calib, points_cleaned_np, img) 
+    overlay_without_removal, inds_without_removal = project_point_cloud_to_image(path_calib, points_cleaned_np, img) 
 
     cv2.imwrite('/Users/laurenzheidrich/Downloads/rem.jpg', overlay_with_removal)    
     cv2.imwrite('/Users/laurenzheidrich/Downloads/non.jpg', overlay_without_removal) 
+
+    points_cleaned_o3d_hpr_fov = o3d.geometry.PointCloud()
+    points_cleaned_o3d_hpr_fov.points = o3d.utility.Vector3dVector(points_cleaned_np_hpr[inds_with_removal, :])
+
+    points_cleaned_o3d_fov = o3d.geometry.PointCloud()
+    points_cleaned_o3d_fov.points = o3d.utility.Vector3dVector(points_cleaned_np[inds_without_removal, :])
+
+    o3d.visualization.draw_geometries([points_cleaned_o3d_hpr_fov])
+    o3d.visualization.draw_geometries([points_cleaned_o3d_fov])
