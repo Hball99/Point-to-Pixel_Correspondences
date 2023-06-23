@@ -33,7 +33,7 @@ def project_point_cloud_to_image(path_calib, points, img):
     pc_2d = project_to_image(points.transpose(), proj_velo2cam2)
     print("Number of points in 2D projected Point Cloud before FOV filter: ", pc_2d.shape[1])
     imgfov_pc_pixel, inds = filter_points_fov(pc_2d, points, img_width, img_height)
-    print("Number of points in 2D projected Point Cloud before FOV filter: ", imgfov_pc_pixel.shape[1])
+    print("Number of points in 2D projected Point Cloud after FOV filter: ", imgfov_pc_pixel.shape[1])
     # imgfov_pc_pixel has dimension [2, #points_in_image_frame], where [0,:] are x coordinates and [1,:] are y coordinates
 
     ### Unites the 2D projected Point Cloud with the rgb image and colors points according to depth
